@@ -2,9 +2,9 @@ from typing import List, Optional
 
 from PIL import Image, ImageDraw
 
-from .grid import draw_image_grid
-from .captions_overlay import overlay_captions
-from .text_utils import *
+from .draw_image_grid import draw_image_grid
+from .drawing.captions_overlay import overlay_captions
+from .drawing.text_utils import *
 
 
 def draw_labeled_image_grid(images: List[Image.Image],
