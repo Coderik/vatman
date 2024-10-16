@@ -3,6 +3,7 @@ from typing import List, Optional
 from PIL import Image, ImageDraw
 
 from .grid import draw_image_grid
+from .captions_overlay import overlay_captions
 from .text_utils import *
 
 
@@ -20,25 +21,33 @@ def draw_labeled_image_grid(images: List[Image.Image],
     if len(images) != len(labels_x) * len(labels_y):
         raise ValueError('Number of images does not match numbers of X and Y labels')
 
+    # Load font
+    font = load_font(fontsize)
+
     cols = len(labels_x)
     rows = len(labels_y)
 
     grid = draw_image_grid(
         images,
         cols=cols,
-        captions=captions,
-        fontsize=fontsize,
         cell_width=cell_width,
         border_width=border_width
     )
+
+    if captions is not None:
+        grid = overlay_captions(
+            grid,
+            captions=captions,
+            font=font,
+            cols=cols,
+            rows=rows,
+            background_color=(255, 255, 255, 128)
+        )
 
     cell_width = grid.width // cols
     cell_height = grid.height // rows
 
     line_spacing = fontsize // 2
-
-    # Load font
-    font = load_font(fontsize)
 
     max_label_y_width = max([s[0] for s in compute_texts_sizes(labels_y, font)]) + margin * 2 if len(labels_y) > 0 else 0
     max_padding_left = int(cell_width * max_space_y)
