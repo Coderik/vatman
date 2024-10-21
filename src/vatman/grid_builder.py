@@ -13,18 +13,21 @@ from .drawing.title import draw_title
 class GridBuilder:
     def __init__(self,
                  images: List[Image.Image],
-                 cols: int):
+                 cols: int = 1,
+                 cell_width: int | None = None,
+                 border: int = 0):
         self.images = images
         self.cols = cols
         self.rows = int(ceil(len(images) / cols))
+        self.cell_width = cell_width
+        self.border = border
 
         self.default_font_size = 16
         default_font = self._load_font(self.default_font_size)
 
-        self.border_width = 0
-
         self.title: str | None = None
         self.title_font = default_font
+        self.title_border = 0
 
         self.captions: List[str] | None = None
         self.captions_font = default_font
@@ -35,14 +38,18 @@ class GridBuilder:
         self.labels_y: List[str] | None = None
         self.labels_y_font = default_font
 
+        self.labels_margin = 10
+
     def add_border(self, width: int) -> 'GridBuilder':
-        self.border_width = width
+        self.border = width
         return self
 
     def add_title(self,
                   title: str,
-                  fontsize: int | None = None) -> 'GridBuilder':
+                  fontsize: int | None = None,
+                  border: int = 0) -> 'GridBuilder':
         self.title = title
+        self.title_border = border
 
         if fontsize is not None:
             self.default_font_size = fontsize
@@ -99,8 +106,8 @@ class GridBuilder:
         grid = draw_grid(
             self.images,
             cols=self.cols,
-            cell_width=None,  # TODO
-            border_width=self.border_width
+            cell_width=self.cell_width,
+            border_width=self.border
         )
 
         if self.captions is not None:
@@ -122,8 +129,7 @@ class GridBuilder:
             labels_x_patch = draw_x_labels(
                 self.labels_x,
                 width=grid.width,
-                margin=10,  # TODO
-                line_spacing=8,  # TODO
+                margin=self.labels_margin,
                 font=self.labels_x_font
             )
             height += labels_x_patch.height
@@ -135,8 +141,7 @@ class GridBuilder:
             labels_y_patch = draw_y_labels(
                 self.labels_y,
                 height=grid.height,
-                margin=10,  # TODO
-                line_spacing=8,  # TODO
+                margin=self.labels_margin,
                 font=self.labels_y_font
             )
             width += labels_y_patch.width
@@ -148,9 +153,8 @@ class GridBuilder:
             title_patch = draw_title(
                 self.title,
                 width=width,
-                margin=10,  # TODO
-                line_spacing=8,  # TODO
-                border=1,  # TODO
+                margin=self.labels_margin,
+                border=self.title_border,
                 font=self.labels_x_font
             )
             height += title_patch.height
@@ -177,8 +181,12 @@ class GridBuilder:
         return load_font(size)
 
 
-def make_grid(images: List[Image.Image], cols: int = 1) -> GridBuilder:
-    return GridBuilder(images=images, cols=cols)
+def make_grid(images: List[Image.Image],
+              cols: int = 1,
+              cell_width: int | None = None,
+              border: int = 0
+              ) -> GridBuilder:
+    return GridBuilder(images=images, cols=cols, cell_width=cell_width, border=border)
 
 
 __all__ = ['GridBuilder', 'make_grid']

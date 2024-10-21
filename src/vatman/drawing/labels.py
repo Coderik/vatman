@@ -2,13 +2,12 @@ from typing import List, Tuple
 
 from PIL import Image, ImageFont, ImageDraw
 
-from .text_utils import wrap_texts, compute_texts_sizes
+from .text_utils import wrap_texts, compute_texts_sizes, compute_line_spacing
 
 
 def draw_x_labels(labels: List[str],
                   width: int,
                   margin: int,
-                  line_spacing: int,
                   font: ImageFont,
                   color: Tuple[int, int, int] | str | None = None) -> Image.Image:
     assert len(labels) > 0, 'At least one label must be provided'
@@ -23,6 +22,7 @@ def draw_x_labels(labels: List[str],
 
     sizes = compute_texts_sizes(labels, font)
 
+    line_spacing = compute_line_spacing(font)
     height = max([s[1] for s in sizes]) + line_spacing * 2
 
     canvas = Image.new(mode='RGB', size=(width, height), color='white')
@@ -47,7 +47,6 @@ def draw_x_labels(labels: List[str],
 def draw_y_labels(labels: List[str],
                   height: int,
                   margin: int,
-                  line_spacing: int,
                   font: ImageFont,
                   color: Tuple[int, int, int] | str | None = None) -> Image.Image:
     assert len(labels) > 0, 'At least one label must be provided'

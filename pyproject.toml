@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vatman"
-version = "0.0.1"
+version = "0.0.2"
 description = "A small utility for drawing image boards"
 authors = ["Vadim Fedorov <vadim.ai.lab@gmail.com>"]
 readme = "README.md"
