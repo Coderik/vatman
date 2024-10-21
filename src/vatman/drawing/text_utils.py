@@ -77,6 +77,12 @@ def compute_texts_sizes(texts: List[str],
     return [compute_text_size(text, font, drawing) for text in texts]
 
 
+def compute_line_spacing(font: ImageFont) -> int:
+    one_line_height = compute_text_size('m', font)[1]
+    two_lines_height = compute_text_size('m\nm', font)[1]
+    return two_lines_height - 2 * one_line_height
+
+
 def draw_text(text: str, x: float, y: float, font: ImageFont, drawing: ImageDraw):
     drawing.multiline_text(
         (x, y),

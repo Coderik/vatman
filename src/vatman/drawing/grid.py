@@ -1,15 +1,13 @@
-from typing import List, Optional
+from typing import List
 from math import ceil
 
-from PIL import Image, ImageDraw
-
-from .text_utils import *
+from PIL import Image
 
 
-def draw_image_grid(images: List[Image.Image],
-                    cols: int,
-                    cell_width: Optional[int] = None,
-                    border_width: int = 0):
+def draw_grid(images: List[Image.Image],
+              cols: int,
+              cell_width: int | None = None,
+              border_width: int = 0):
     rows = int(ceil(len(images) / cols))
 
     width, height = images[0].size
