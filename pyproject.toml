@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vatman"
-version = "0.0.3"
+version = "0.0.4"
 description = "A small utility for drawing image boards"
 authors = ["Vadim Fedorov <vadim.ai.lab@gmail.com>"]
 repository = "https://github.com/Coderik/vatman"
@@ -17,7 +17,7 @@ packages = []
 
 [tool.poetry.dependencies]
 python = "^3.10"
-pillow = "^10.4.0"
+pillow = ">=11.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.5.0"
